@@ -19,6 +19,34 @@ if (navigator.geolocation)
       const { longitude } = position.coords;
       //   console.log(longitude, latitude);
       console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
+      const coords = [latitude, longitude];
+
+      const map = L.map('map').setView(coords, 17);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      map.on('click', function (mapEvent) {
+        console.log(mapEvent);
+        const { lat, lng } = mapEvent.latlng;
+        console.log(lat, lng);
+
+        L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(
+            L.popup({
+              maxWidth: 250,
+              minWidth: 100,
+              autoClose: false,
+              closeOnClick: false,
+              className: 'cycling-popup',
+            })
+          )
+          .setPopupContent('heheheh')
+          .openPopup();
+      });
     },
     function () {
       alert("couldn't find your location");
